@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Cookies by John</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:#fff7ef;
+  color:#3b1f0e;
+  position: relative;
+  overflow-x:hidden;
+}
+
+/* MENU */
+nav{
+  position:fixed;
+  top:0;
+  width:100%;
+  background:rgba(255,122,0,0.95);
+  display:flex;
+  justify-content:center;
+  gap:40px;
+  padding:18px;
+  z-index:1000;
+  flex-wrap:wrap;
+}
+nav a{
+  color:white;
+  text-decoration:none;
+  font-weight:bold;
+  font-size:18px;
+  transition:0.3s;
+}
+nav a:hover{transform:scale(1.1);}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  padding:80px 20px 20px 20px; /* DIMINUI O RESPIRO */
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center; /* CENTRALIZA DE VERDADE */
+  text-align:center;
+  gap:10px; /* CONTROLA O ESPAÇO ENTRE ELEMENTOS */
+}
+.hero img{
+  width:100%;
+  max-width:650px;
+  margin-bottom:0; /* REMOVE O ESPAÇO EXTRA */
+}
+.hero p{
+  max-width:600px;
+  font-size:20px;
+  margin:0; /* REMOVE ESPAÇO DESNECESSÁRIO */
+}
+
+.hero button{
+  margin-top:30px;
+  padding:18px 35px;
+  font-size:18px;
+  background:#3b1f0e;
+  color:white;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  transition:0.3s;
+}
+.hero button:hover{transform:scale(1.1);}
+
+/* SEÇÃO DE PRODUTOS */
+.section{
+  padding:30px;
+}
+.section h2{
+  margin-bottom:20px;
+  border-left:5px solid #ff7a00;
+  padding-left:10px;
+}
+.produtos{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+}
+.card{
+  background:white;
+  border-radius:10px;
+  padding:10px;
+  text-align:center;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+  transition:0.3s transform,0.3s box-shadow,0.3s border;
+  opacity:0;
+  transform: translateY(20px);
+  position:relative;
+  z-index:1;
+  border:2px solid transparent;
+}
+
+.card.visible{
+  opacity:1;
+  transform: translateY(0);
+}
+.card:hover{
+  transform:translateY(-10px) scale(1.03);
+  box-shadow:0 15px 35px rgba(0,0,0,0.25);
+  border:2px solid #ff7a00;
+}
+.card img{
+  width:100%;
+  height:220px;
+  object-fit:cover;
+  border-radius:8px;
+  transition:0.3s transform;
+}
+.card img:hover{transform:scale(1.05);}
+.card h3{margin:10px 0 5px 0;}
+.card p{margin:0 0 10px 0;}
+
+/* SELEÇÃO QUANTIDADE BOTÃO */
+.qty-container{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin-bottom:5px;
+}
+.qty-container button{
+  width:30px;
+  height:30px;
+  background:#ff7a00;
+  color:white;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+  font-size:18px;
+  transition:0.2s;
+}
+.qty-container button:hover{background:#e36f00;}
+.qty-display{
+  margin:0 10px;
+  font-weight:bold;
+  width:25px;
+  text-align:center;
+}
+
+/* BOTÃO ADICIONAR */
+.card button{
+margin-top:10px;
+padding:10px 15px;
+border:none;
+background:#ff7a00;
+color:white;
+border-radius:6px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.card button:hover{
+background:#e36f00;
+}
+
+/* CHATBOT MODERNO */
+.chatbot{
+  position:fixed;
+  bottom:25px;
+  right:25px;
+  background:#ff7a00;
+  padding:16px 22px;
+  border-radius:40px;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 5px 15px rgba(0,0,0,0.3);
+  z-index:2000;
+  transition:0.3s;
+}
+.chatbot:hover{transform:scale(1.1);}
+.chatbox{
+  position:fixed;
+  bottom:90px;
+  right:25px;
+  background:white;
+  width:360px;
+  max-width:90%;
+  height:500px;
+  border-radius:20px;
+  padding:0;
+  box-shadow:0 15px 35px rgba(0,0,0,0.3);
+  display:none;
+  flex-direction:column;
+  z-index:2000;
+  animation:fadeIn 0.4s ease;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* TOPO DO CHAT */
+.chat-header{
+  background:#ff7a00;
+  color:white;
+  padding:10px 15px;
+  display:flex;
+  align-items:center;
+  border-top-left-radius:20px;
+  border-top-right-radius:20px;
+}
+.chat-header img{
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  margin-right:10px;
+}
+.chat-header .status{
+  width:10px;
+  height:10px;
+  background:#00ff00;
+  border-radius:50%;
+  margin-left:5px;
+}
+
+/* MENSAGENS */
+.chat-messages{
+  flex:1;
+  overflow-y:auto;
+  font-size:14px;
+  margin-bottom:10px;
+  padding:10px;
+  display:flex;
+  flex-direction:column;
+}
+.chat-messages .msg{
+  padding:8px 12px;
+  border-radius:15px;
+  max-width:80%;
+  margin:6px 0;
+  word-wrap:break-word;
+  opacity:0;
+  transform:translateY(10px);
+  transition:0.3s;
+}
+.chat-messages .msg.show{opacity:1;transform:translateY(0);}
+.user{align-self:flex-end;background:#3b1f0e;color:white;}
+.bot{align-self:flex-start;background:#ff7a00;color:white;}
+
+/* INPUT DO CHAT */
+.chat-input{
+  display:flex;
+  gap:5px;
+  padding:10px;
+  border-top:1px solid #ff7a00;
+}
+.chat-input input{
+  flex:1;
+  padding:10px;
+  border-radius:20px;
+  border:1px solid #ff7a00;
+  outline:none;
+}
+.chat-input button{
+  background:#ff7a00;
+  border:none;
+  color:white;
+  padding:10px 16px;
+  cursor:pointer;
+  border-radius:20px;
+  transition:0.2s;
+}
+.chat-input button:hover{background:#e36f00;}
+
+/* BOTÃO PEDIDO FINAL */
+.pedido-btn{
+  margin-top:6px;
+  background:#3b1f0e;
+  color:white;
+  border:none;
+  padding:8px 12px;
+  cursor:pointer;
+  border-radius:10px;
+  font-size:14px;
+  transition:0.2s;
+}
+.pedido-btn:hover{background:#2a170f;}
+
+/* RESUMO DO PEDIDO */
+.pedido-resumo{
+  background:#fff3e6;
+  border-left:4px solid #ff7a00;
+  padding:5px 10px;
+  margin-top:5px;
+  font-size:13px;
+  border-radius:5px;
+}
+
+/* COOKIES ATRÁS */
+.cookie{
+  position:fixed;
+  top:-40px;
+  font-size:28px;
+  opacity:0.8;
+  z-index:0;
+  pointer-events:none;
+}
+
+/* CONFETES */
+.confete{
+  position:absolute;
+  font-size:16px;
+  pointer-events:none;
+  animation:confete-fall 1s linear forwards;
+}
+@keyframes confete-fall{
+  0%{transform:translateY(0) rotate(0deg);}
+  100%{transform:translateY(50px) rotate(360deg);opacity:0;}
+}
+.forno-indicador{
+position:fixed;
+top:80px;
+right:20px;
+background:#3b1f0e;
+color:white;
+padding:10px 15px;
+border-radius:20px;
+font-size:14px;
+z-index:1000;
+box-shadow:0 5px 15px rgba(0,0,0,0.3);
+}
+
+.forno-on{
+background:#27ae60;
+}
+
+.forno-off{
+background:#c0392b;
+}
+
+.carrossel{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.carrossel img{
+  width:100%;
+  max-height:300px;
+  object-fit:cover;
+  border-radius:10px;
+}
+
+.carrossel button{
+  position:absolute;
+  background:rgba(0,0,0,0.5);
+  color:white;
+  border:none;
+  font-size:22px;
+  padding:8px 12px;
+  cursor:pointer;
+  border-radius:50%;
+}
+
+.prev{left:10px;}
+.next{right:10px;}
+
+.carrossel button:hover{
+  background:#ff7a00;
+}
+
+/* REDES SOCIAIS MODERNAS */
+.social-icons{
+  display:flex;
+  gap:20px;
+  justify-content:center;
+  margin-top:15px;
+}
+
+.social-icons a{
+  width:50px;
+  height:50px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:#eee;
+  font-size:22px;
+  color:#3b1f0e;
+  transition:0.3s;
+  text-decoration:none;
+}
+
+.social-icons a:hover{
+  transform:scale(1.1);
+}
+
+.social-icons a:nth-child(1):hover{
+  background:#ff7a00;
+  color:white;
+}
+
+.social-icons a:nth-child(2):hover{
+  background:#ff7a00;
+  color:white;
+}
+
+.social-icons a:nth-child(3):hover{
+  background:#ff7a00;
+  color:white;
+}
+
+iframe{
+  position:relative;
+  z-index:5;
+}
+
+footer{
+  background:#ff7a00;
+  color:white;
+  padding:40px 20px;
+}
+
+footer h2{
+  color:white;
+  border-left:5px solid white;
+}
+
+footer .card{
+  background:white;
+  color:#3b1f0e;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+footer p{
+  color:white;
+}
+
+footer .card p{
+  color:#3b1f0e;
+}
+
+footer iframe{
+  border-radius:15px;
+}
+
+footer{
+  margin-top:50px;
+  text-align:center;
+}
+
+footer h2{
+  text-align:left;
+}
+
+</style>
+</head>
+<body>
+
+  <div id="fornoStatus" class="forno-indicador forno-on">
+🔥 Forno ligado
+</div>
+<nav>
+<a href="#home">Home</a>
+<a href="#sabores">Cookies</a>
+<a href="#precos">Preços</a>
+<a href="#sobre">Sobre</a>
+<a href="#contato">Contato</a>
+</nav>
+
+<section id="home" class="hero">
+<img src="imagens/logo.png" alt="cookie">
+<p>Seja bem-vindo, cookielover 🍪<br>
+Forno ligado significa uma coisa: cookies quentinhos saindo pra você 🔥<br>
+Então pode pedir sem medo… mas aproveita antes que acabe 😏🍪</p>
+<button onclick="window.open('https://wa.me/5513996463229')">Fazer pedido</button>
+</section>
+
+<section id="sabores" class="section">
+<h2>🍪 Nossos Cookies</h2>
+<div class="produtos" id="produtos"></div>
+</section>
+
+<section id="precos" class="section">
+<h2>📦 Nossos Pacotes & Combos</h2>
+
+<div class="produtos">
+
+<div class="card visible">
+  <img src="imagens/pacote_grande.png">
+  <h3>Pacote Tradicional</h3>
+  <p>8 cookies de 15g</p>
+  <p style="font-weight:bold;color:#27ae60;">R$20</p>
+  <p style="font-size:13px;">Perfeito para dividir 😍</p>
+  <button onclick="escolherPacote('Tradicional',20)">Escolher</button>
+</div>
+
+<div class="card visible">
+  <img src="imagens/pacote_snack.png">
+  <h3>Pacote Snack</h3>
+  <p>10 mini cookies de 9g</p>
+  <p style="font-weight:bold;color:#27ae60;">R$12</p>
+  <p style="font-size:13px;">Ideal para um lanchinho 🍪</p>
+  <button onclick="escolherPacote('Snack',12)">Escolher</button>
+</div>
+
+<div class="card visible">
+  <img src="imagens/combo_familia.png">
+  <h3>Combo Família 🔥</h3>
+  <p>20 cookies variados</p>
+  <p style="font-weight:bold;color:#27ae60;">R$45</p>
+  <button onclick="escolherPacote('Família',45)">Escolher</button>
+</div>
+
+<div class="card visible">
+  <img src="imagens/combo_casal.png">
+  <h3>Combo Casal ❤️</h3>
+  <p>12 cookies especiais</p>
+  <p style="font-weight:bold;color:#27ae60;">R$30</p>
+  <button onclick="escolherPacote('Casal',30)">Escolher</button>
+</div>
+
+</div>
+</section> <!-- FECHA PREÇOS -->
+
+<section id="sobre" class="section">
+<h2>📖 Sobre a Cookies by John</h2>
+
+<div class="card visible" style="max-width:900px;margin:auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;">
+
+<!-- IMAGEM -->
+<div style="flex:1;min-width:250px;text-align:center;display:flex;flex-direction:column;align-items:center;">
+
+  <video 
+    src="imagens/video.mp4" 
+    autoplay 
+    muted 
+    loop 
+    playsinline
+    style="
+      width:100%;
+      max-width:300px;
+      aspect-ratio:9/16;
+      object-fit:cover;
+      border-radius:15px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.2);
+    ">
+  </video>
+
+  <p style="font-size:13px;margin-top:5px;">João Matheus - Fundador 🍪</p>
+
+</div>
+
+<!-- TEXTO -->
+<div style="flex:2;min-width:250px;">
+
+<p>
+A <strong>Cookies by John</strong> nasceu de um momento simples… aquela vontade de comer um doce depois do almoço 🍪
+</p>
+
+<p>
+O que começou de forma caseira, na cozinha e sem grandes pretensões, rapidamente conquistou amigos, família e foi ganhando espaço — até se tornar algo muito maior.
+</p>
+
+<p>
+Hoje, cada cookie é feito de forma artesanal, com atenção em cada detalhe: da massa ao ponto perfeito, das gotas generosas de chocolate até a experiência de quem recebe.
+</p>
+
+<p>
+Mais do que vender cookies, a ideia sempre foi criar algo que realmente marcasse momentos — seja no lanche da tarde, depois de um dia cansativo ou naquele momento de “eu mereço” 😏🍪
+</p>
+
+<p>
+Por trás de tudo isso está o <strong>John</strong>, transformando algo simples em algo especial todos os dias.
+</p>
+
+<p>
+Se o forno estiver ligado… já sabe: tem cookie quentinho saindo 🍪🔥
+</p>
+
+<p>
+E agora que você chegou até aqui… acho que já merece experimentar também, né? 😄
+</p>
+
+</div>
+
+</div>
+</section>
+
+<div class="chatbot" onclick="abrirChat()">💬 John IA</div>
+
+<div class="chatbox" id="chat">
+<div class="chat-header">
+  <img src="imagens/cookie_icon.png" alt="cookie">
+  <div>Assistente Virtual Cookies by John <span class="status"></span></div>
+</div>
+<div class="chat-messages" id="mensagens">
+<div class="msg bot show">Olá! Eu sou o John 🍪</div>
+<div class="msg bot show">Quer ajuda para escolher seu cookie ou montar seu pedido?</div>
+</div>
+<div class="chat-input">
+<input id="pergunta" placeholder="Digite sua pergunta..." />
+<button onclick="enviarPergunta()">Enviar</button>
+</div>
+</div>
+<footer id="contato">
+<h2>📱 Contato</h2>
+
+<div style="display:flex;flex-wrap:wrap;gap:30px;align-items:flex-start;justify-content:center;">
+
+<!-- LADO ESQUERDO -->
+<div class="card visible" style="flex:1;min-width:280px;max-width:400px;">
+
+<h3>Fale com a gente 🍪</h3>
+
+<div class="social-icons">
+
+<a href="https://wa.me/5513996463229" target="_blank">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<a href="https://instagram.com/" target="_blank">
+  <i class="fab fa-instagram"></i>
+</a>
+
+<a href="https://maps.google.com" target="_blank">
+  <i class="fas fa-location-dot"></i>
+</a>
+
+</div>
+
+<p style="margin-top:15px;font-size:14px;text-align:center;">
+📍 Registro - SP<br>
+⏰ Entregas das 13h às 20h
+</p>
+
+</div>
+
+<!-- MAPA MENOR -->
+<div style="flex:1;min-width:280px;max-width:500px;">
+<iframe 
+  src="https://www.google.com/maps?q=Registro%20SP&output=embed"
+  width="100%" 
+  height="250" 
+  style="border:0;border-radius:15px;">
+</iframe>
+</div>
+
+</div>
+
+</footer>
+
+<script>
+const GROQ_API_KEY="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";
+
+/* COOKIES ATRÁS */
+for(let i=0;i<25;i++){
+  let c=document.createElement("div");
+  c.className="cookie";
+  c.innerText="🍪";
+  document.body.appendChild(c);
+  let left=Math.random()*100;
+  let dur=6+Math.random()*6;
+  let delay=Math.random()*5;
+  c.style.left=left+"vw";
+  c.style.animation=`fall${i} ${dur}s linear ${delay}s infinite`;
+  let keyframes=`@keyframes fall${i} {0%{transform:translateY(-50px) rotate(0deg);}100%{transform:translateY(110vh) rotate(${Math.random()*360}deg);}}`;
+  let style=document.createElement('style');
+  style.innerHTML=keyframes;
+  document.head.appendChild(style);
+}
+
+/* CRIAR CARDS DINÂMICOS */
+const produtosData=[
+  {
+    nome:"Tradicional",
+    img:"imagens/tradicional.png",
+    estoque:true,
+    desc:"Clássico que nunca erra 😍 Massa de baunilha com gotas generosas de chocolate ao leite."
+  },
+  {
+    nome:"Red Velvet",
+    img:"imagens/redvelvet.png",
+    estoque:true,
+    desc:"O queridinho ❤️ Massa vermelha de chocolate com gotas cremosas de chocolate branco."
+  },
+  {
+    nome:"Duplo Chocolate",
+    img:"imagens/duplochocolate.png",
+    estoque:true,
+    desc:"Explosão de chocolate 🍫 Massa intensa + gotas de chocolate ao leite."
+  },
+  {
+    nome:"Cookie Kids",
+    img:"imagens/kids.png",
+    estoque:true,
+    desc:"Colorido e divertido 🎉 Baunilha com confeti de chocolate que derrete na boca."
+  }
+];
+const container=document.getElementById("produtos");
+produtosData.forEach(prod=>{
+  let card=document.createElement("div");
+  card.className="card";
+ card.innerHTML=`
+<img src="${prod.img}" alt="${prod.nome}">
+
+<h3>${prod.nome}</h3>
+<p style="font-size:13px;">${prod.desc}</p>
+<p style="font-size:13px;color:${prod.estoque ? 'green':'red'}">
+${prod.estoque ? 'Disponível 🟢':'Esgotado 🔴'}
+
+</p>
+    <div class="qty-container">
+      <button onclick="alterarQtd(this,-1)">-</button>
+      <span class="qty-display">1</span>
+      <button onclick="alterarQtd(this,1)">+</button>
+    </div>
+    <button class="add-btn" onclick="selecionarSabor('${prod.nome}', this)">Selecionar</button>
+  `;
+  if(!prod.estoque){
+card.querySelector(".add-btn").disabled=true;
+card.querySelector(".add-btn").style.background="#999";
+card.querySelector(".add-btn").innerText="Esgotado";
+}
+  container.appendChild(card);
+  setTimeout(()=>card.classList.add("visible"),100);
+});
+
+// FUNÇÕES
+let pedido=[];
+let saborSelecionado = null;
+let quantidadeSelecionada = 1;
+const somAdd=new Audio('https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg');
+const somSend=new Audio('https://actions.google.com/sounds/v1/cartoon/pop.ogg');
+
+// NOVOS SONS
+const somSelect=new Audio('https://actions.google.com/sounds/v1/ui/click.ogg'); // leve
+const somSucesso=new Audio('https://actions.google.com/sounds/v1/cartoon/concussive_drum_hit.ogg'); // forte
+
+function abrirChat(){
+  let chat=document.getElementById("chat");
+  chat.style.display=chat.style.display==="flex"?"none":"flex";
+}
+
+function addMensagem(texto,classe,playSound=false){
+  if(playSound){ 
+    if(classe==="user") somSend.play();
+    else somAdd.play();
+  }
+  let div=document.createElement("div");
+  div.className="msg "+classe;
+  div.innerText=texto;
+  document.getElementById("mensagens").appendChild(div);
+  setTimeout(()=>div.classList.add("show"),10);
+  document.getElementById("mensagens").scrollTop=document.getElementById("mensagens").scrollHeight;
+  return div;
+}
+
+function alterarQtd(btn,delta){
+  let container=btn.parentElement;
+  let display=container.querySelector(".qty-display");
+  let valor=parseInt(display.innerText);
+  valor+=delta;
+  if(valor<1) valor=1;
+  display.innerText=valor;
+}
+
+function atualizarResumoPedido(){
+  const mensagens=document.getElementById("mensagens");
+  document.querySelectorAll(".pedido-resumo").forEach(a=>a.remove());
+
+  let resumo=document.createElement("div");
+  resumo.className="pedido-resumo";
+
+  if(pedido.length===0){
+    resumo.innerText="Seu pedido está vazio 🍪";
+  } else {
+    let total=0;
+    resumo.innerHTML="<strong>Resumo do pedido:</strong><br>";
+
+    pedido.forEach(item=>{
+      let subtotal=item.quantidade*item.preco;
+      total+=subtotal;
+      resumo.innerHTML+=`${item.quantidade}x ${item.nome}<br>`;
+    });
+
+    resumo.innerHTML+=`<strong>Escolha o pacote para ver o valor final 🍪</strong>`;
+  }
+
+  mensagens.appendChild(resumo);
+  mensagens.scrollTop=mensagens.scrollHeight;
+
+  document.querySelectorAll(".pedido-btn").forEach(btn=>btn.remove());
+
+  let btnLimpar=document.createElement("button");
+  btnLimpar.className="pedido-btn";
+  btnLimpar.innerText="🗑️ Limpar pedido";
+  btnLimpar.onclick=limparPedido;
+  mensagens.appendChild(btnLimpar);
+
+  if(pedido.length>0){
+    let btn=document.createElement("button");
+    btn.className="pedido-btn";
+    btn.innerText="Enviar pedido para WhatsApp 🍪";
+    btn.onclick=function(){
+      let msg="Olá! Quero fazer um pedido na Cookies by John 🍪\n";
+      msg += pedido.map(item=>item.quantidade+"x "+item.nome).join("\n");
+      window.open("https://wa.me/5513996463229?text="+encodeURIComponent(msg));
+    }
+    mensagens.appendChild(btn);
+  }
+}
+
+function gerarConfete(elemento){
+  for(let i=0;i<10;i++){
+    let c=document.createElement("div");
+    c.className="confete";
+    c.innerText="🍪";
+    let rect=elemento.getBoundingClientRect();
+    c.style.left=(rect.left+Math.random()*rect.width)+"px";
+    c.style.top=(rect.top+Math.random()*rect.height)+"px";
+    c.style.fontSize=(10+Math.random()*15)+"px";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),1000);
+  }
+}
+
+/* IA */
+async function enviarPergunta(){
+  let input=document.getElementById("pergunta");
+  let pergunta=input.value.trim();
+  if(!pergunta) return;
+  let texto = pergunta.toLowerCase();
+
+  // DETECTAR SABOR + PACOTE AUTOMATICAMENTE
+const sabores = [
+  {nome:"Tradicional", match:["cookie tradicional","sabor tradicional"]},
+  {nome:"Red Velvet", match:["red velvet"]},
+  {nome:"Duplo Chocolate", match:["duplo chocolate"]},
+  {nome:"Cookie Kids", match:["cookie kids","kids"]}
+];
+
+const pacotes = [
+  {nome:"Tradicional", match:["pacote tradicional","tamanho tradicional"]},
+  {nome:"Snack", match:["snack"]},
+  {nome:"Família", match:["família","familia"]},
+  {nome:"Casal", match:["casal"]}
+];
+
+let saborDetectado = sabores.find(s => 
+  s.match.some(m => texto.includes(m))
+);
+
+let pacoteDetectado = pacotes.find(p => 
+  p.match.some(m => texto.includes(m))
+);
+
+if(saborDetectado && pacoteDetectado){
+
+  let precoMap = {
+    "tradicional": 20,
+    "snack": 12,
+    "família": 45,
+    "casal": 30
+  };
+
+  pedido.push({
+   nome: `${saborDetectado.nome} (${pacoteDetectado.nome})`,
+    quantidade: 1,
+    preco: precoMap[pacoteDetectado]
+  });
+
+  addMensagem(pergunta,"user",true);
+
+  addMensagem(`🔥 Já montei seu pedido automaticamente:
+1x ${saborDetectado} (${pacoteDetectado}) 🍪`, "bot", true);
+
+  atualizarResumoPedido();
+  input.value="";
+  return;
+}
+
+  // FINALIZAR PEDIDO
+// FINALIZAR PEDIDO
+if(
+  texto.includes("finalizar") ||
+  texto.includes("fechar pedido") ||
+  texto.includes("confirmar") ||
+  texto.includes("quero pedir") ||
+  texto.includes("pode enviar") ||
+  texto.includes("mandar pedido")
+){
+  addMensagem(pergunta,"user",true);
+  input.value="";
+  finalizarPedido();
+  return;
+}
+
+// CANCELAR / LIMPAR
+if(
+  texto.includes("cancelar") ||
+  texto.includes("limpar") ||
+  texto.includes("apagar") ||
+  texto.includes("zerar") ||
+  texto.includes("começar de novo") ||
+  texto.includes("reiniciar pedido")
+){
+  addMensagem(pergunta,"user",true);
+  input.value="";
+  limparPedido();
+  return;
+}
+  addMensagem(pergunta,"user",true);
+  input.value="";
+  let loading=addMensagem("🍪 John está pensando...","bot");
+  try{
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions",{
+      method:"POST",
+      headers:{
+        "Authorization":"Bearer "+GROQ_API_KEY,
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        model:"llama-3.3-70b-versatile",
+        messages:[
+         {
+role:"system",
+content:`
+Você é John, mascote da Cookies by John 🍪.
+
+REGRAS IMPORTANTES:
+- Você só pode recomendar os sabores disponíveis no cardápio:
+  • Tradicional
+  • Red Velvet
+  • Duplo Chocolate
+  • Cookie Kids
+- Nunca invente sabores novos.
+- Nunca cite sabores que não existem.
+- Se o cliente perguntar por algo fora do cardápio, diga educadamente que não temos.
+
+SOBRE OS PACOTES:
+- Tradicional (8 cookies)
+- Snack (10 mini cookies)
+- Família (20 cookies)
+- Casal (12 cookies)
+
+PERSONALIDADE:
+- Seja simpático, divertido e direto.
+- Fale como uma marca jovem.
+- Incentive o cliente a montar um pedido.
+
+OBJETIVO:
+- Ajudar o cliente a escolher sabores reais
+- Levar ele a finalizar o pedido
+OBJETIVO:
+- Sempre tentar converter a conversa em pedido
+- Incentivar o cliente a escolher sabor + pacote
+- Ser direto e levar para finalização
+`
+},
+          {role:"user",content:pergunta}
+        ],
+        temperature:0.7
+      })
+    });
+    const data = await response.json();
+    loading.remove();
+    const resposta = data?.choices?.[0]?.message?.content || "Hmm... tive um probleminha 🍪";
+    addMensagem(resposta,"bot",true);
+  } catch(err) {
+    loading.remove();
+    addMensagem("Ops! Algo deu errado ao tentar responder 😅","bot",true);
+    console.error(err);
+  }
+}
+
+document.getElementById("pergunta").addEventListener("keypress",function(e){
+  if(e.key==="Enter"){ e.preventDefault(); enviarPergunta(); }
+});
+
+let fornoLigado = true;
+
+function alternarForno(){
+const el = document.getElementById("fornoStatus");
+
+if(fornoLigado){
+el.innerText="⏸️ Forno descansando";
+el.classList.remove("forno-on");
+el.classList.add("forno-off");
+}else{
+el.innerText="🔥 Forno ligado";
+el.classList.remove("forno-off");
+el.classList.add("forno-on");
+}
+
+fornoLigado=!fornoLigado;
+}
+
+const imagensSobre = [
+"imagens/sobre1.jpg",
+"imagens/sobre2.jpg",
+"imagens/sobre3.jpg"
+];
+
+let slideAtual = 0;
+
+function mudarSlide(direcao){
+  slideAtual += direcao;
+
+  if(slideAtual < 0) slideAtual = imagensSobre.length - 1;
+  if(slideAtual >= imagensSobre.length) slideAtual = 0;
+
+  document.getElementById("slide").src = imagensSobre[slideAtual];
+}
+
+function selecionarSabor(nome, btn){
+  const card = btn.parentElement;
+  const quantidade = parseInt(card.querySelector('.qty-display').innerText);
+
+  saborSelecionado = nome;
+  quantidadeSelecionada = quantidade;
+
+  abrirChatAutomatico();
+
+  somSelect.currentTime = 0;
+somSelect.play();
+
+addMensagem(`🍪 Você escolheu ${quantidade}x ${nome}`,"user",true);
+addMensagem("Agora só falta escolher o tamanho do pacote 📦 lá em PREÇOS pra finalizar seu pedido 😍","bot",true);
+  gerarConfete(btn);
+}
+
+function escolherPacote(tipo, preco){
+
+  abrirChatAutomatico();
+
+  if(!saborSelecionado){
+    addMensagem("⚠️ Escolha primeiro um sabor na aba Cookies 🍪","bot",true);
+    return;
+  }
+
+  pedido.push({
+    nome: `${saborSelecionado} (${tipo})`,
+    quantidade: quantidadeSelecionada,
+    preco: preco
+  });
+
+  somSucesso.currentTime = 0;
+somSucesso.play();
+
+  addMensagem(
+    `✅ Pedido adicionado:\n${quantidadeSelecionada}x ${saborSelecionado} (${tipo}) 📦🍪`,
+    "user",
+    true
+  );
+
+  addMensagem("🔥 Item salvo no seu pedido! Pode continuar escolhendo ou finalizar 😎","bot",true);
+
+  saborSelecionado = null;
+  quantidadeSelecionada = 1;
+
+  atualizarResumoPedido();
+}
+
+function abrirChatAutomatico(){
+  let chat=document.getElementById("chat");
+  if(chat.style.display !== "flex"){
+    chat.style.display="flex";
+  }
+}
+
+function limparPedido(){
+  pedido = [];
+  saborSelecionado = null;
+  quantidadeSelecionada = 1;
+
+  addMensagem("🗑️ Pedido limpo com sucesso!","user",true);
+  addMensagem("Pode começar um novo pedido quando quiser 🍪","bot",true);
+
+  atualizarResumoPedido();
+}
+function finalizarPedido(){
+
+  // CASO 1: escolheu sabor mas não pacote
+  if(saborSelecionado){
+    addMensagem("⚠️ Você escolheu o sabor, mas falta selecionar o pacote lá em PREÇOS 📦","bot",true);
+    return;
+  }
+
+  // CASO 2: pedido vazio
+  if(pedido.length === 0){
+    addMensagem("⚠️ Você ainda não escolheu nenhum item 🍪","bot",true);
+    return;
+  }
+
+  let msg = "🍪 *Pedido - Cookies by John*\n\n";
+
+  pedido.forEach(item=>{
+    msg += `${item.quantidade}x ${item.nome}\n`;
+  });
+
+  msg += "\n😄 Pedido feito pelo site!";
+
+  addMensagem("Perfeito! Já estou enviando seu pedido pro WhatsApp 😍🍪","bot",true);
+
+  setTimeout(()=>{
+    window.open("https://wa.me/5513996463229?text="+encodeURIComponent(msg));
+  }, 1000);
+}
+
+</script>
+</body>
+</html>
