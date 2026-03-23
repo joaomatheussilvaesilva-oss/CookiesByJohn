@@ -456,7 +456,7 @@ footer h2{
 </head>
 <body>
 
-  <div id="fornoStatus" class="forno-indicador forno-on">
+  <div id="fornoStatus" class="forno-indicador forno-off">
 🔥 Forno ligado
 </div>
 <nav>
@@ -498,22 +498,22 @@ Então pode pedir sem medo… mas aproveita antes que acabe 😏🍪</p>
   <img src="imagens/pacote_snack.png">
   <h3>Pacote Snack</h3>
   <p>10 mini cookies de 9g</p>
-  <p style="font-weight:bold;color:#27ae60;">R$12</p>
+  <p style="font-weight:bold;color:#27ae60;">R$15</p>
   <p style="font-size:13px;">Ideal para um lanchinho 🍪</p>
   <button onclick="escolherPacote('Snack',12)">Escolher</button>
 </div>
 
 <div class="card visible">
   <img src="imagens/combo_familia.png">
-  <h3>Combo Família 🔥</h3>
+  <h3>Combo Jumbo 🔥</h3>
   <p>20 cookies variados</p>
-  <p style="font-weight:bold;color:#27ae60;">R$45</p>
+  <p style="font-weight:bold;color:#27ae60;">R$50</p>
   <button onclick="escolherPacote('Família',45)">Escolher</button>
 </div>
 
 <div class="card visible">
   <img src="imagens/combo_casal.png">
-  <h3>Combo Casal ❤️</h3>
+  <h3>Combo Dupla ❤️</h3>
   <p>12 cookies especiais</p>
   <p style="font-weight:bold;color:#27ae60;">R$30</p>
   <button onclick="escolherPacote('Casal',30)">Escolher</button>
@@ -650,7 +650,7 @@ E agora que você chegou até aqui… acho que já merece experimentar também, 
 </footer>
 
 <script>
-const GROQ_API_KEY="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";
+const GROQ_API_KEY="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";
 
 /* COOKIES ATRÁS */
 for(let i=0;i<25;i++){
@@ -680,19 +680,19 @@ const produtosData=[
   {
     nome:"Red Velvet",
     img:"imagens/redvelvet.png",
-    estoque:true,
+    estoque:false,
     desc:"O queridinho ❤️ Massa vermelha de chocolate com gotas cremosas de chocolate branco."
   },
   {
     nome:"Duplo Chocolate",
     img:"imagens/duplochocolate.png",
-    estoque:true,
+    estoque:false,
     desc:"Explosão de chocolate 🍫 Massa intensa + gotas de chocolate ao leite."
   },
   {
     nome:"Cookie Kids",
     img:"imagens/kids.png",
-    estoque:true,
+    estoque:false,
     desc:"Colorido e divertido 🎉 Baunilha com confeti de chocolate que derrete na boca."
   }
 ];
@@ -858,9 +858,9 @@ if(saborDetectado && pacoteDetectado){
 
   let precoMap = {
     "tradicional": 20,
-    "snack": 12,
-    "família": 45,
-    "casal": 30
+    "snack": 15,
+    "jumbo": 50,
+    "dupla": 30
   };
 
   pedido.push({
@@ -940,8 +940,8 @@ REGRAS IMPORTANTES:
 SOBRE OS PACOTES:
 - Tradicional (8 cookies)
 - Snack (10 mini cookies)
-- Família (20 cookies)
-- Casal (12 cookies)
+- Jumbo (20 cookies)
+- Dupla (12 cookies)
 
 PERSONALIDADE:
 - Seja simpático, divertido e direto.
@@ -977,7 +977,7 @@ document.getElementById("pergunta").addEventListener("keypress",function(e){
   if(e.key==="Enter"){ e.preventDefault(); enviarPergunta(); }
 });
 
-let fornoLigado = true;
+let fornoLigado = false;
 
 function alternarForno(){
 const el = document.getElementById("fornoStatus");
